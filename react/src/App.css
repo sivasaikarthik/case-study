@@ -1,0 +1,86 @@
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+.RailwayDetailsBackground {
+  /*   background-image: linear-gradient(rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.2)),
+    url("/src/Components/images/2.jpg");
+  height: inherit; */
+  color: black;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.RailwayUpdateBackground {
+  /*background-image: linear-gradient(rgb(0, 0, 0, 0.5), rgb(0, 0, 0, 0.2)),
+    url("/src/Components/images/2.jpg");
+  height: 700px;
+  color: white;*/
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 20px;
+}
+.label-checkbox {
+  display: flex;
+  align-items: center;
+  padding-left: 50px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.link {
+  color: green;
+  text-transform: uppercase;
+  align-items: center;
+}
+.link:active {
+  color: green;
+}
+label {
+  text-transform: capitalize;
+}
+
+.homeBackground {
+  background-image: linear-gradient(rgb(0, 0, 0, 0.2), rgb(0, 0, 0, 0.2)),
+    url("/src/Components/images/home.jpg");
+  height: 700px;
+  color: white;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 20px;
+}
+.center-text {
+  text-align: center !important;
+}
+.div1 {
+  margin-top: 27%;
+  color: white;
+  font-size: 40px;
+}
+.box {
+  margin-top: 10%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 10%;
+  background-color: white;
+  color: black;
+}
