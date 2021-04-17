@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.exceptions.ResourceNotFoundException;
+import com.example.demo.models.AllCoaches;
 import com.example.demo.models.Coaches;
 import com.example.demo.models.details;
 import com.example.demo.models.stopTime;
@@ -83,13 +84,13 @@ public class trainDetailsController {
 		   }
     
 	@GetMapping("/getCoaches/{trainNumber}")
-	  public List<Coaches>getCoaches(@PathVariable int trainNumber)
+	  public List<Coaches>  getCoaches(@PathVariable int trainNumber)
 	  {
 		details d=repo.findById(trainNumber).
 				orElseThrow(
 						()->new ResourceNotFoundException("Train not found by id"+trainNumber)
 				);
-		List<Coaches>coaches= new ArrayList<Coaches>();
+		List<Coaches> coaches = null;
 		if(d!=null)
 		{
 			coaches=d.getCoaches();

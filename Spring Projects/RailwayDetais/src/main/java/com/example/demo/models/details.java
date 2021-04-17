@@ -16,14 +16,14 @@ public class details {
 	private int trainNumber;
 	List<stopTime> trainStopsAndTimes=new ArrayList<stopTime>();
 	week weekDays;
-	List<Coaches>coaches;
+	List<Coaches>  coaches;
 	
-	public List<Coaches> getCoaches() {
+	public List<Coaches>  getCoaches() {
 		return coaches;
 	}
 
 
-	public void setCoaches(List<Coaches> coaches) {
+	public void setCoaches(List<Coaches>  coaches) {
 		this.coaches = coaches;
 	}
 
@@ -72,7 +72,7 @@ public class details {
 
 
 	public details(String trainName, int trainNumber, List<stopTime> trainStopsAndTimes, week weekDays,
-			List<Coaches> coaches) {
+			List<Coaches>  coaches) {
 		super();
 		this.trainName = trainName;
 		this.trainNumber = trainNumber;
