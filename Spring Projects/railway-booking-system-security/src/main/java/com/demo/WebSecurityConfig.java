@@ -19,8 +19,6 @@ import com.demo.jwt.AuthTokenFilter;
 
 
 
-
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -60,8 +58,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.authorizeRequests().antMatchers("/auth/**").permitAll()
-			.antMatchers("/open/**").permitAll()
+			.authorizeRequests().antMatchers("/authuser/**").permitAll()
+			.antMatchers("/auth/**").permitAll()
+			.antMatchers("/all/**").permitAll()
 			.anyRequest().authenticated();
 
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

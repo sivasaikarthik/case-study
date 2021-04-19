@@ -44,10 +44,15 @@ public class BookingController {
 	private ReservationDetails reservationDetails = new ReservationDetails();
 
 	private CoachesDetails coachesDetails = new CoachesDetails();
+	
+	@GetMapping("/hey")
+	public String hello() {
+		String hi = restTemplate.getForObject("https://TRAIN-SERVICE/hey", String.class);
+		return "hello form booking" +" " + hi;
+	}
 
 	/*
 	 * This rest controller is used to reservation details to the database
-	 * 
 	 */
 	@GetMapping("allBooking")
 	public List<ReservationDetails> allBooking() {
@@ -132,13 +137,6 @@ public class BookingController {
 		}
 		return "Your cancellation is sucessful";
 	}
-
-	@GetMapping("/hey")
-	public String hello() {
-		String hi = restTemplate.getForObject("https://RAILWAY-DETAIL-SERVICE/hey", String.class);
-		return "hello form booking" + "connected to railway database" + hi;
-	}
-
 	/*
 	 * This function help to get train seat numbers associated by its coaches
 	 */

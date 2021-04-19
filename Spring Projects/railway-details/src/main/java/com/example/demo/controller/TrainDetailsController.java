@@ -38,7 +38,7 @@ public class TrainDetailsController {
 		return repo.findAll();
 	}
 	
-	  @GetMapping("/allTrains/{trainNumber}") 
+	  @GetMapping("/trainById/{trainNumber}") 
 	  public  Optional<Details> findByTrainNumber(@PathVariable int trainNumber) { 
 		  return repo.findById(trainNumber);
 		  }
@@ -104,11 +104,11 @@ public class TrainDetailsController {
 		return false;
 	}
 	@PostMapping("/addTrain")
-	public String addTrain(@RequestBody Details d)
+	public Details addTrain(@RequestBody Details d)
 	{
 		repo.save(d);
 		System.out.println(d);
-		return "Train details added";
+		return repo.save(d);
 	}
 
 	
@@ -119,6 +119,7 @@ public class TrainDetailsController {
 		repo.save(d);
 		return "updated train details of "+d.getTrainName();
 	}
+	
 	
 	@DeleteMapping("/deleteTrain/{id}")
 	public String deleteTrain(@PathVariable int id)
