@@ -47,13 +47,10 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 .link {
-  color: green;
+  color: white;
   text-transform: uppercase;
-  align-items: center;
 }
-.link:active {
-  color: green;
-}
+
 label {
   text-transform: capitalize;
 }
@@ -78,6 +75,23 @@ label {
 }
 .box {
   margin-top: 10%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 10%;
+  background-color: white;
+  color: black;
+}
+.box1 {
+  margin-top: 7%;
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-bottom: 10%;
+  background-color: white;
+  color: black;
+}
+
+.box3 {
+  margin-top: 2%;
   margin-left: 10%;
   margin-right: 10%;
   margin-bottom: 10%;

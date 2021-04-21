@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { IoSwapVertical } from "react-icons/all";
 import { Col, Form, Input, Row } from "reactstrap";
-import Search from "./Search";
-import TrainDetailsServices from "./TrainDetailsServices";
-//import history from "./History";
 import { Redirect } from "react-router-dom";
 class Home extends Component {
   constructor(props) {
@@ -31,22 +28,96 @@ class Home extends Component {
   searchTrain = () => {
     const d = new Date(this.state.date);
     const week = d.getDay();
-    TrainDetailsServices.SearchTrain(
+    /* TrainDetailsServices.SearchTrain(
       week,
       this.state.source,
       this.state.destination
-    )
-      .then((res) => this.setState({ train: res.data }))
-      .catch((err) => alert("please check ur connection ", err));
+    ).then((res) => this.setState({ train: res.data }))
+      .catch((err) => alert("please check ur connection ", err)); */
+    let trainData = [
+      {
+        trainName: "TIRUPATI SAINAGAR SHIRDI EXPRESS",
+        trainNumber: 17417,
+        trainStopsAndTimes: [
+          {
+            stop: "hyderabad",
+            time: "0001-11-30T13:37:00.000+00:00",
+            cost: 0.0,
+          },
+          {
+            stop: "banglore",
+            time: "0001-11-30T14:37:00.000+00:00",
+            cost: 55.0,
+          },
+          {
+            stop: "Thirupathi",
+            time: "0001-11-30T15:37:00.000+00:00",
+            cost: 45.0,
+          },
+        ],
+        weekDays: {
+          sunday: false,
+          monday: false,
+          tuesday: true,
+          wednesday: false,
+          thrusday: true,
+          friday: false,
+          saturday: false,
+        },
+        coaches: [
+          { coacheType: "Sleeper class", noOfCoaches: 12, noOfSeats: 115 },
+          { coacheType: "third class", noOfCoaches: 3, noOfSeats: 115 },
+          { coacheType: "Secound class", noOfCoaches: 2, noOfSeats: 115 },
+        ],
+      },
+      {
+        trainName: " SAINAGAR SHIRDI EXPRESS",
+        trainNumber: 17416,
+        trainStopsAndTimes: [
+          {
+            stop: "banglore",
+            time: "0001-11-30T13:37:00.000+00:00",
+            cost: 0,
+          },
+          {
+            stop: "Thirupathi",
+            time: "0001-11-30T15:37:00.000+00:00",
+            cost: 45.0,
+          },
+          {
+            stop: "hyderabad",
+            time: "0001-11-30T14:37:00.000+00:00",
+            cost: 55.0,
+          },
+        ],
+        weekDays: {
+          sunday: false,
+          monday: false,
+          tuesday: true,
+          wednesday: false,
+          thrusday: true,
+          friday: false,
+          saturday: false,
+        },
+        coaches: [
+          { coacheType: "Sleeper class", noOfCoaches: 12, noOfSeats: 115 },
+          { coacheType: "third class", noOfCoaches: 3, noOfSeats: 115 },
+          { coacheType: "Secound class", noOfCoaches: 2, noOfSeats: 115 },
+        ],
+      },
+    ];
+    console.log(trainData);
+    localStorage.setItem("sou", this.state.source);
+    localStorage.setItem("des", this.state.destination);
+    localStorage.setItem("train", JSON.stringify(trainData));
+    this.setState({ redirect: "/Search" });
   };
-
   render() {
     if (this.state.redirect) {
       return (
         <Redirect
           to={{
             pathname: this.state.redirect,
-            id: "123",
           }}
         />
       );
@@ -104,10 +175,7 @@ class Home extends Component {
                 <Row className="pt-2">
                   <Col md={5}></Col>
                   <Col md={2}>
-                    <button
-                      type="button"
-                      onClick={() => this.setState({ redirect: "/Search" })}
-                    >
+                    <button type="button" onClick={this.searchTrain}>
                       Search
                     </button>
                   </Col>

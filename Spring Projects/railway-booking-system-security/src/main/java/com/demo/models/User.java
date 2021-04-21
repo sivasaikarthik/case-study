@@ -15,17 +15,21 @@ import com.mongodb.lang.NonNull;
 @Document(collection  = "users")
 public class User {
 	
-	@Id
+	  @Id
 	  private String id;
 
 	  @NonNull
 	  @Size(max = 20)
+	
 	  private String username;
 
 	  @NotBlank
 	  @Size(max = 50)
 	  @Email
 	  private String email;
+	  
+	  
+	  private String phoneNumber;
 
 	  @NotBlank
 	  @Size(max = 120)
@@ -37,21 +41,26 @@ public class User {
 	  public User() {
 	  }
 
-	  public User(String username, String email, String password) {
-	    this.username = username;
-	    this.email = email;
-	    this.password = password;
-	  }
+	  public User(@Size(max = 20) String username, @NotBlank @Size(max = 50) @Email String email,
+			String phoneNumber, @NotBlank @Size(max = 120) String password) {
+		super();
+
+		this.username = username;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.password = password;
+	}
+
 
 	  public String getId() {
-	    return id;
-	  }
+		return id;
+	}
 
-	  public void setId(String id) {
-	    this.id = id;
-	  }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-	  public String getUsername() {
+	public String getUsername() {
 	    return username;
 	  }
 
@@ -82,5 +91,17 @@ public class User {
 	  public void setRoles(Set<Role> roles) {
 	    this.roles = roles;
 	  }
+
+
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 
 }

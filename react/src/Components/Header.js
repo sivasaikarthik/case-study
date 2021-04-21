@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import RailwayDetails from "./RailwayDetails";
 import Update from "./Update";
-import { HiOutlineSearch } from "react-icons/all";
+import { FiLogIn, SiGnuprivacyguard } from "react-icons/all";
 import Home from "./Home";
 import TrainDetailsServices from "./TrainDetailsServices";
 import Search from "./Search";
-import history from "./History";
+import Login from "./Login";
+import Signup from "./Signup";
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -41,12 +43,9 @@ class Header extends Component {
   render() {
     return (
       <div>
-        <Router history={history}>
-          <nav
-            style={{ background: "black", color: "white" }}
-            className="pb-2 pt-2"
-          >
-            <Link className="pl-2 pr-5" to="/Home">
+        <Router /* history={history} */>
+          <nav style={{ background: "black" }} className="pb-3 pt-3">
+            <Link className="link pl-2 pr-5" to="/first">
               Railway Booking System
             </Link>
             <Link className="link pr-3 pl-5" to="/AddTrainDetails">
@@ -55,33 +54,41 @@ class Header extends Component {
             <Link className="link" to="/UpadteTrainDetails">
               Update Train
             </Link>
-
-            <span style={{ float: "right" }} className="pr-5">
-              <input
-                placeholder="Train Number"
-                type="number"
-                name="trainNumber"
-                placeholder="trainNumber"
-                id="trainNumber"
-                onChange={this.changeHandler}
-              />
-              <button type="button" onClick={this.searchTrain}>
-                <HiOutlineSearch />
-              </button>
-            </span>
+            <Link
+              to="/signup"
+              style={{ float: "right", color: "white" }}
+              className="pr-1"
+            >
+              <SiGnuprivacyguard></SiGnuprivacyguard>
+              Signup
+            </Link>
+            <Link
+              to="/login"
+              style={{ float: "right", color: "white" }}
+              className="pr-2"
+            >
+              <FiLogIn className="pt-1"> </FiLogIn>Login
+            </Link>
           </nav>
+
           <switch>
-            <Route path="/Home">
+            <Route exact path="/first">
               <Home />
             </Route>
-            <Route path="/AddTrainDetails">
+            <Route exact path="/AddTrainDetails">
               <RailwayDetails />
             </Route>
-            <Route path="/Search">
+            <Route exact path="/Search">
               <Search />
             </Route>
-            <Route path="/UpadteTrainDetails">
+            <Route exact path="/UpadteTrainDetails">
               <Update />
+            </Route>
+            <Route exact={true} path="/login">
+              <Login />
+            </Route>
+            <Route exact={true} path="/signup">
+              <Signup />
             </Route>
           </switch>
         </Router>
