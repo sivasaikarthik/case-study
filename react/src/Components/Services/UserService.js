@@ -1,10 +1,12 @@
 import axios from "axios";
 class UserService {
   verify(login) {
-    return axios.post("http://localhost:9000/auth/signin", login);
+    console.log(login);
+    return axios.post("http://localhost:9001/auth/signin", login);
   }
   createAccount(signup) {
-    return axios.post("http://localhost:9000/auth/signup", signup);
+    console.log(signup);
+    return axios.post("http://localhost:9001/auth/signup", signup);
   }
 }
 

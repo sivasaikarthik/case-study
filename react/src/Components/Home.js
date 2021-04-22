@@ -11,6 +11,7 @@ class Home extends Component {
       destination: "",
       date: "",
       train: [],
+
       redirect: null,
     };
     //this.searchButton = this.searchButton.bind(this);
@@ -40,12 +41,12 @@ class Home extends Component {
         trainNumber: 17417,
         trainStopsAndTimes: [
           {
-            stop: "hyderabad",
+            stop: "banglore",
             time: "0001-11-30T13:37:00.000+00:00",
             cost: 0.0,
           },
           {
-            stop: "banglore",
+            stop: "hyderabad",
             time: "0001-11-30T14:37:00.000+00:00",
             cost: 55.0,
           },
@@ -109,6 +110,7 @@ class Home extends Component {
     console.log(trainData);
     localStorage.setItem("sou", this.state.source);
     localStorage.setItem("des", this.state.destination);
+    localStorage.setItem("date", this.state.date);
     localStorage.setItem("train", JSON.stringify(trainData));
     this.setState({ redirect: "/Search" });
   };

@@ -11,7 +11,7 @@ class Signup extends Component {
       username: "",
       email: "",
       password: "",
-      phoneNumber: "xxxxxxxxx",
+      phoneNumber: null,
       redirect: null,
       signup: false,
     };
@@ -26,22 +26,24 @@ class Signup extends Component {
     });
   };
   createAccount = () => {
+    const { username, password, phoneNumber, email } = this.state;
     let details = {
-      username: this.username,
-      email: this.email,
-      password: this.password,
-      phoneNumber: this.phoneNumber,
+      username: username,
+      email: email,
+      password: password,
+      phoneNumber: phoneNumber,
     };
-    /*  UserService.createAccount(details)
-      .then((res) => localStorage.setItem("loginAcess", res.data))
-      .catch((err) => console.log(err), alert("please check you connection")); */
+    UserService.createAccount(details)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err), alert("please check you connection"));
     this.setState({
-      signup: true,
+      signup: false,
       redirect: "/login",
     });
+    console.log(details);
   };
   render() {
-    if (this.state.redirect) {
+    if (this.state.signup) {
       return (
         <Redirect
           to={{

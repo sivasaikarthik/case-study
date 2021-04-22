@@ -89,12 +89,14 @@ label {
   background-color: white;
   color: black;
 }
-
+::-webkit-scrollbar {
+  display: none;
+}
 .box3 {
   margin-top: 2%;
   margin-left: 10%;
   margin-right: 10%;
-  margin-bottom: 10%;
+  margin-bottom: 2%;
   background-color: white;
   color: black;
 }

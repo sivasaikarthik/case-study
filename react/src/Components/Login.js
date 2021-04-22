@@ -11,6 +11,8 @@ class Login extends Component {
       userName: "",
       password: "",
       redirect: null,
+      error: "",
+      message: false,
     };
   }
   changeHandler = (event) => {
@@ -29,12 +31,22 @@ class Login extends Component {
     };
     UserService.verify(loginRequest)
       .then((res) => {
-        if (res.data != "") {
-        } else {
-          localStorage.setItem("login", res.data);
-        }
+        console.log("inside then");
+        localStorage.setItem("login", res.data);
+        this.setState({ message: false });
       })
-      .catch((err) => console.log(err), alert("please check you connection"));
+      .catch((err) => {
+        if (err.message == "Request failed with status code 401") {
+          // alert("incorrect passowrd");
+          this.setState({
+            error: "Login Failed! Invalid Username and Password",
+            message: true,
+          });
+          console.log(err.message);
+        } else {
+          alert("please check you connection");
+        }
+      });
   };
   changeHandler = (event) => {
     const target = event.target;
@@ -85,8 +97,9 @@ class Login extends Component {
               onChange={this.changeHandler}
             />
           </div>
-          {this.state.userName}
-          {this.state.password}
+          {this.state.message && (
+            <span style={{ color: "red" }}>{this.state.error}</span>
+          )}
           <button
             type="button"
             className="btn btn-dark btn-lg btn-block"

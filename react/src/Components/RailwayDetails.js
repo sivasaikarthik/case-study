@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Row, Col } from "reactstrap";
 import TrainDetailsServices from "./TrainDetailsServices";
 
 class RailwayDetails extends Component {
@@ -6,8 +7,8 @@ class RailwayDetails extends Component {
     super(props);
 
     this.state = {
-      trainName: "",
-      trainNumber: 0,
+      trainName: null,
+      trainNumber: null,
       stops: "",
       time: "",
       trainStopsAndTimes: [],
@@ -19,12 +20,33 @@ class RailwayDetails extends Component {
       thrusday: false,
       friday: false,
       saturday: false,
-      sleeper: 0,
-      ac: 0,
-      acCoach: 0,
-      SleeperCoach: 0,
+      coacheType: null,
+      noOfCoaches: null,
+      noOfSeats: null,
+      coaches: [],
     };
   }
+  delete = (lists, name) => {
+    lists.map((list) => list.stop != name);
+    console.log(lists);
+  };
+  addCoach = () => {
+    const { coaches, coacheType, noOfCoaches, noOfSeats } = this.state;
+    if (coacheType != null && noOfCoaches != null && noOfSeats != null) {
+      let c = coaches;
+      c.push({
+        coacheType: coacheType,
+        noOfCoaches: noOfCoaches,
+        noOfSeats: noOfSeats,
+      });
+      this.setState({
+        coaches: c,
+        coacheType: null,
+        noOfSeats: null,
+        noOfCoaches: null,
+      });
+    }
+  };
   changeHandler = (event) => {
     /* this.setState({ [e.target.name]: e.target.value });
     console.log(e.target.value) */
@@ -49,10 +71,7 @@ class RailwayDetails extends Component {
       thrusday,
       friday,
       saturday,
-      sleeper,
-      ac,
-      acCoach,
-      SleeperCoach,
+      coaches,
     } = this.state;
 
     let dup = {
@@ -68,15 +87,13 @@ class RailwayDetails extends Component {
         friday: friday,
         saturday: saturday,
       },
-      sleeper: sleeper,
-      ac: ac,
-      acCoach: acCoach,
-      sleeperCoach: SleeperCoach,
+      coaches: coaches,
     };
     console.log(dup);
-    if (trainNumber === 0) {
+    if (trainNumber === null && trainName === null) {
       alert("Fill the train details to upload");
     } else {
+      console.log(dup);
       TrainDetailsServices.addTrain(dup)
         .then((res) => {
           alert("Train Details are added");
@@ -147,8 +164,8 @@ class RailwayDetails extends Component {
             ></input>
           </div>
           <div className="container">
-            <div className="row">
-              <div className="col">
+            <Row>
+              <Col>
                 <label for="time" className="mr-2">
                   Time
                 </label>
@@ -160,8 +177,8 @@ class RailwayDetails extends Component {
                   value={this.state.date}
                   onChange={this.changeHandler}
                 ></input>
-              </div>
-              <div className="col">
+              </Col>
+              <Col>
                 <label for="stop" className="mr-2">
                   Stop
                 </label>
@@ -173,9 +190,8 @@ class RailwayDetails extends Component {
                   value={this.state.stops}
                   onChange={this.changeHandler}
                 ></input>
-              </div>
-
-              <div className="col">
+              </Col>
+              <Col>
                 <label for="cost" className="mr-2">
                   Cost
                 </label>
@@ -187,9 +203,8 @@ class RailwayDetails extends Component {
                   value={this.state.cost}
                   onChange={this.changeHandler}
                 ></input>
-              </div>
-
-              <div className="col">
+              </Col>
+              <Col>
                 <button
                   type="button"
                   className="btn btn-primary"
@@ -197,87 +212,20 @@ class RailwayDetails extends Component {
                 >
                   Add Stop
                 </button>
-              </div>
-            </div>
+              </Col>
+            </Row>
           </div>
           <div className="container">
-            <th className="pl-4 pr-5">Time</th>
-            <th className=" pr-5 pr-3">Stop</th>
-            <th className="pl-3">Cost</th>
-            {trainstop}
-          </div>
-
-          <div class="container">
-            <div class="row">
-              <div class="col">
-                <div className="mb-3">
-                  <label for="acCoach" className="pr-5">
-                    No of Ac Coaches
-                  </label>
-                  <input
-                    required
-                    type="number"
-                    name="acCoach"
-                    placeholder="acCoach"
-                    id="acCoach"
-                    value={this.state.acCoach}
-                    onChange={this.changeHandler}
-                  ></input>
-                </div>
-              </div>
-
-              <div class="col">
-                <div className="mb-3">
-                  <label for="ac" className="pr-5">
-                    No of Seats in Ac
-                  </label>
-                  <input
-                    required
-                    type="number"
-                    name="ac"
-                    placeholder="ac"
-                    id="ac"
-                    value={this.state.ac}
-                    onChange={this.changeHandler}
-                  ></input>
-                </div>
-              </div>
-            </div>
-            <br />
-            <div class="row">
-              <div class="col">
-                <div className="mb-3">
-                  <label for="SleeperCoach" className="pr-5">
-                    No of Sleeper Coaach
-                  </label>
-                  <input
-                    type="number"
-                    name="SleeperCoach"
-                    placeholder="SleeperCoach"
-                    id="SleeperCoach"
-                    value={this.state.SleeperCoach}
-                    onChange={this.changeHandler}
-                  ></input>
-                </div>
-              </div>
-
-              <div class="col">
-                <div className="mb-3">
-                  <label for="sleeper" className="pr-5">
-                    No of Seats in sleeper
-                  </label>
-                  <input
-                    required
-                    type="number"
-                    name="sleeper"
-                    placeholder="sleeper"
-                    id="sleeper"
-                    value={this.state.sleeper}
-                    onChange={this.changeHandler}
-                  ></input>
-                </div>
-              </div>
-            </div>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Stop</th>
+                  <th>Time</th>
+                  <th>Cost</th>
+                </tr>
+              </thead>
+              {trainstop}
+            </table>
           </div>
 
           <div className="center">
@@ -365,6 +313,72 @@ class RailwayDetails extends Component {
                 </label>
                 <br />
               </td>
+            </table>
+          </div>
+          <div className="container">
+            <Row>
+              <Col>
+                <label for="coacheType">Coach type</label>
+                <input
+                  type="text"
+                  name="coacheType"
+                  id="coacheType"
+                  placeholder="coacheType"
+                  value={this.state.coacheType}
+                  onChange={this.changeHandler}
+                ></input>
+              </Col>
+              <Col>
+                <label for="noOfCoaches">No of coaches</label>
+                <input
+                  type="number"
+                  name="noOfCoaches"
+                  placeholder="noOfCoaches"
+                  id="noOfCoaches"
+                  value={this.state.noOfCoaches}
+                  onChange={this.changeHandler}
+                ></input>
+              </Col>
+              <Col>
+                <label for="noOfSeats">No of seats</label>
+                <input
+                  type="number"
+                  name="noOfSeats"
+                  placeholder="noOfSeats"
+                  id="noOfSeats"
+                  value={this.state.noOfSeats}
+                  onChange={this.changeHandler}
+                ></input>
+              </Col>
+              <Col>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={this.addCoach}
+                >
+                  Add Coaches
+                </button>
+              </Col>
+            </Row>
+          </div>
+          <div className="container">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>No of coaches</th>
+                  <th>No of seats</th>
+                </tr>
+              </thead>
+              {this.state.coaches.map((coache) => {
+                return (
+                  <tr>
+                    <td>{coache.coacheType}</td>
+                    <td>{coache.noOfCoaches}</td>
+                    <td>{coache.noOfSeats}</td>
+                  </tr>
+                );
+              })}
             </table>
           </div>
 

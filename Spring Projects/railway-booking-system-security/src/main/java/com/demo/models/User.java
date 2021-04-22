@@ -18,21 +18,17 @@ public class User {
 	  @Id
 	  private String id;
 
-	  @NonNull
-	  @Size(max = 20)
+	  
 	
 	  private String username;
 
-	  @NotBlank
-	  @Size(max = 50)
-	  @Email
+	 
 	  private String email;
 	  
 	  
 	  private String phoneNumber;
 
-	  @NotBlank
-	  @Size(max = 120)
+	 
 	  private String password;
 
 	  @DBRef

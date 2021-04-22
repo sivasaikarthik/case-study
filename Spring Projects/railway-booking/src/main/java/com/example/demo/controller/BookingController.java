@@ -73,19 +73,19 @@ public class BookingController {
 		if (restTemplate.getForObject("https://Train-service/trainExist/" + reservation.getTrainNumber(),
 				Boolean.class)) {
 			// Checking whether the train on that date exist in database or not if not it
-			// creates new database
-			if (!userCoachesRepository.existsById(trainNumberAndDate)) {
-				// Getting data from the train detail Micro service
-				ResponseEntity<List<Coaches>> responseEntity = restTemplate.exchange(
-						"https://Train-service/getCoaches/" + reservation.getTrainNumber(), HttpMethod.GET, null,
-						new ParameterizedTypeReference<List<Coaches>>() {
-						});
-				List<Coaches> allCoaches = responseEntity.getBody();
+						// creates new database
+						if (!userCoachesRepository.existsById(trainNumberAndDate)) {
+							// Getting data from the train detail Micro service
+							ResponseEntity<List<Coaches>> responseEntity = restTemplate.exchange(
+									"https://Train-service/getCoaches/" + reservation.getTrainNumber(), HttpMethod.GET, null,
+									new ParameterizedTypeReference<List<Coaches>>() {
+									});
+							List<Coaches> allCoaches = responseEntity.getBody();
 
-				coachesDetails.setTrainNumberAndDate(trainNumberAndDate);
-				coachesDetails.setAllCoaches(allCoaches);
-				userCoachesRepository.save(coachesDetails);
-			}
+							coachesDetails.setTrainNumberAndDate(trainNumberAndDate);
+							coachesDetails.setAllCoaches(allCoaches);
+							userCoachesRepository.save(coachesDetails);
+						}
 
 		} else {
 			return "Train doesn't exist please check train number";
@@ -179,5 +179,7 @@ public class BookingController {
 		userCoachesRepository.save(cd);
 		return seats;
 	}
+	
+	
 
 }

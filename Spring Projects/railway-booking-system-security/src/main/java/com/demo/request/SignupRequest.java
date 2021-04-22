@@ -5,20 +5,16 @@ import java.util.Set;
 import javax.validation.constraints.*;
  
 public class SignupRequest {
-    @NotBlank
-    @Size(min = 3, max = 20)
+    
     private String username;
  
-    @NotBlank
-    @Size(max = 50)
-    @Email
+    
     private String email;
     private String phoneNumber;
     
     private Set<String> roles;
     
-    @NotBlank
-    @Size(min = 6, max = 40)
+   
     private String password;
   
     public String getUsername() {
@@ -60,5 +56,12 @@ public class SignupRequest {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+	@Override
+	public String toString() {
+		return "SignupRequest [username=" + username + ", email=" + email + ", phoneNumber=" + phoneNumber + ", roles="
+				+ roles + ", password=" + password + "]";
+	}
+	
     
 }

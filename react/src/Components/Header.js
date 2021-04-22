@@ -8,6 +8,7 @@ import TrainDetailsServices from "./TrainDetailsServices";
 import Search from "./Search";
 import Login from "./Login";
 import Signup from "./Signup";
+import BookingPage from "./BookingPage";
 
 class Header extends Component {
   constructor(props) {
@@ -74,6 +75,9 @@ class Header extends Component {
           <switch>
             <Route exact path="/first">
               <Home />
+            </Route>
+            <Route exact path="/booking">
+              <BookingPage />
             </Route>
             <Route exact path="/AddTrainDetails">
               <RailwayDetails />
