@@ -11,7 +11,7 @@ class Home extends Component {
       destination: "",
       date: "",
       train: [],
-
+      autorefre: true,
       redirect: null,
     };
     //this.searchButton = this.searchButton.bind(this);
@@ -26,6 +26,7 @@ class Home extends Component {
       [name]: value,
     });
   };
+
   searchTrain = () => {
     const d = new Date(this.state.date);
     const week = d.getDay();

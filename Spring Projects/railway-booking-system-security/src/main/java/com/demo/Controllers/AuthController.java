@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.UserDetailsImpl;
@@ -35,7 +34,6 @@ import com.demo.response.jwtResponse;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/auth")
 public class AuthController {
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -52,7 +50,7 @@ public class AuthController {
 	@Autowired
 	JwtUtils jwtUtils;
 
-	@PostMapping("/signin")
+	@PostMapping("/auth/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -72,19 +70,21 @@ public class AuthController {
 												 roles));
 	}
 
-	@PostMapping("/signup")
+	@PostMapping("/auth/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 		System.out.println(signUpRequest);
-		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Username is already taken!"));
+		Boolean emailExist=userRepository.existsByEmail(signUpRequest.getEmail());
+		Boolean userExist=userRepository.existsByUsername(signUpRequest.getUsername());
+		if(userExist && emailExist)
+		{
+			return ResponseEntity.ok(new MessageResponse("error.email.username"));
+		}
+		if (userExist) {
+			return ResponseEntity.ok(new MessageResponse("error.username"));
 		}
 
-		if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-			return ResponseEntity
-					.badRequest()
-					.body(new MessageResponse("Error: Email is already in use!"));
+		if (emailExist) {
+			return ResponseEntity.ok(new MessageResponse("error.email"));
 		}
 
 		// Create new user's account
@@ -126,4 +126,7 @@ public class AuthController {
 
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}
+	
+	
+	
 }

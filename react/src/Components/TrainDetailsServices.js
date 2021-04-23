@@ -1,6 +1,6 @@
 import axios from "axios";
 
-class TrainDetailsServices {
+class TrainDetailsService {
   getTrain() {
     return axios.get("http://localhost:9000/allTrains");
   }
@@ -25,4 +25,4 @@ class TrainDetailsServices {
   }
 }
 
-export default new TrainDetailsServices();
+export default new TrainDetailsService();

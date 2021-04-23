@@ -14,6 +14,12 @@ class Signup extends Component {
       phoneNumber: null,
       redirect: null,
       signup: false,
+      emailExist: false,
+      usernameExist: false,
+      error: {
+        username: "User already exist ",
+        email: "Email already Exist",
+      },
     };
   }
   changeHandler = (event) => {
@@ -33,14 +39,32 @@ class Signup extends Component {
       password: password,
       phoneNumber: phoneNumber,
     };
-    UserService.createAccount(details)
-      .then((res) => console.log(res.data))
-      .catch((err) => console.log(err), alert("please check you connection"));
-    this.setState({
-      signup: false,
-      redirect: "/login",
-    });
     console.log(details);
+    UserService.createAccount(details)
+      .then((res) => {
+        console.log(res.data.message);
+        let reply = res.data.message;
+        if (reply == "error.email.username") {
+          console.log("email and username exist ");
+          this.setState({ usernameExist: true, emailExist: true });
+        } else if (reply == "error.email") {
+          console.log("email  exist ");
+          this.setState({ emailExist: true });
+        } else if (reply == "error.username") {
+          console.log(" username exist ");
+          this.setState({ usernameExist: true });
+        } else {
+        }
+        if (reply == "User registered successfully!") {
+          console.log(res.data);
+          alert(reply);
+          this.setState({
+            signup: true,
+            redirect: "/login",
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   };
   render() {
     if (this.state.signup) {
@@ -68,6 +92,9 @@ class Signup extends Component {
               value={this.state.username}
               onChange={this.changeHandler}
             />
+            {this.state.usernameExist && (
+              <span style={{ color: "red" }}>{this.state.error.username}</span>
+            )}
           </div>
 
           <div className="form-group">
@@ -81,7 +108,11 @@ class Signup extends Component {
               value={this.state.email}
               onChange={this.changeHandler}
             />
+            {this.state.emailExist && (
+              <span style={{ color: "red" }}>{this.state.error.email}</span>
+            )}
           </div>
+
           <div className="form-group">
             <label for="phoneNumber">Phone Number</label>
             <input

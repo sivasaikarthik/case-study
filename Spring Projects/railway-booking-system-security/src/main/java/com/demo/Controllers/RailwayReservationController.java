@@ -35,15 +35,8 @@ public class RailwayReservationController {
 		return "hi from login" + " " ;
 	}
 	
-	
-	@PreAuthorize("hasRole('USER')")
-	@GetMapping("/authuser/hey")
-	public String user() {
-		//String hiFromOtherServices = restTemplate.getForObject("http://Booking-service/booking/hey", String.class);
-		return "hi from login" + " user" ;
-	}
 
-
+  
 	@GetMapping("/all/searchAllTrains")
 	public List<Details> allTrains() {
 

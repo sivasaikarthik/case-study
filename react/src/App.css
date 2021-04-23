@@ -89,9 +89,16 @@ label {
   background-color: white;
   color: black;
 }
-::-webkit-scrollbar {
-  display: none;
+
+.box2 {
+  margin-top: 3%;
+  margin-left: 7%;
+  margin-right: 7%;
+  margin-bottom: 1%;
+  background-color: white;
+  color: black;
 }
+
 .box3 {
   margin-top: 2%;
   margin-left: 10%;
@@ -99,4 +106,8 @@ label {
   margin-bottom: 2%;
   background-color: white;
   color: black;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

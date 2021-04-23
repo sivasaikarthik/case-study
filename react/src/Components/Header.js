@@ -1,14 +1,19 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import RailwayDetails from "./RailwayDetails";
 import Update from "./Update";
-import { FiLogIn, SiGnuprivacyguard } from "react-icons/all";
 import Home from "./Home";
 import TrainDetailsServices from "./TrainDetailsServices";
 import Search from "./Search";
 import Login from "./Login";
 import Signup from "./Signup";
 import BookingPage from "./BookingPage";
+import MyBookings from "./MyBookings";
+import DefaultNav from "./Navigation/DefaultNav";
+import UserNav from "./Navigation/UserNav";
+import AdminNav from "./Navigation/AdminNav";
+import Logout from "./Security/Logout";
+import App from "../App";
 
 class Header extends Component {
   constructor(props) {
@@ -19,15 +24,6 @@ class Header extends Component {
       train: [],
     };
   }
-  changeHandler = (event) => {
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value,
-    });
-  };
   searchTrain = () => {
     console.log(this.state.trainNumber);
     TrainDetailsServices.getTrainId(this.state.trainNumber)
@@ -41,40 +37,28 @@ class Header extends Component {
       })
       .catch((err) => alert("please check your connection to the server"));
   };
+  checkUserType = () => {
+    let details = JSON.parse(localStorage.getItem("login"));
+
+    if (details.roles[0] == "ROLE_USER") {
+      return <UserNav></UserNav>;
+    } else if (details.roles[0] == "ROLE_ADMIN") {
+      return <AdminNav></AdminNav>;
+    } else {
+      return <DefaultNav></DefaultNav>;
+    }
+  };
   render() {
     return (
       <div>
-        <Router /* history={history} */>
-          <nav style={{ background: "black" }} className="pb-3 pt-3">
-            <Link className="link pl-2 pr-5" to="/first">
-              Railway Booking System
-            </Link>
-            <Link className="link pr-3 pl-5" to="/AddTrainDetails">
-              Add Train
-            </Link>
-            <Link className="link" to="/UpadteTrainDetails">
-              Update Train
-            </Link>
-            <Link
-              to="/signup"
-              style={{ float: "right", color: "white" }}
-              className="pr-1"
-            >
-              <SiGnuprivacyguard></SiGnuprivacyguard>
-              Signup
-            </Link>
-            <Link
-              to="/login"
-              style={{ float: "right", color: "white" }}
-              className="pr-2"
-            >
-              <FiLogIn className="pt-1"> </FiLogIn>Login
-            </Link>
-          </nav>
-
-          <switch>
+        <Router>
+          {this.checkUserType()}
+          <Switch>
             <Route exact path="/first">
               <Home />
+            </Route>
+            <Route exact path="/logout">
+              <Logout />
             </Route>
             <Route exact path="/booking">
               <BookingPage />
@@ -85,6 +69,9 @@ class Header extends Component {
             <Route exact path="/Search">
               <Search />
             </Route>
+            <Route path="/mybookings">
+              <MyBookings />
+            </Route>
             <Route exact path="/UpadteTrainDetails">
               <Update />
             </Route>
@@ -94,7 +81,7 @@ class Header extends Component {
             <Route exact={true} path="/signup">
               <Signup />
             </Route>
-          </switch>
+          </Switch>
         </Router>
       </div>
     );

@@ -32,8 +32,9 @@ class Login extends Component {
     UserService.verify(loginRequest)
       .then((res) => {
         console.log("inside then");
-        localStorage.setItem("login", res.data);
-        this.setState({ message: false });
+        localStorage.setItem("login", JSON.stringify(res.data));
+        this.setState({ login: true, redirect: "/first", message: false });
+        console.log("end");
       })
       .catch((err) => {
         if (err.message == "Request failed with status code 401") {
@@ -42,7 +43,7 @@ class Login extends Component {
             error: "Login Failed! Invalid Username and Password",
             message: true,
           });
-          console.log(err.message);
+          console.log(err);
         } else {
           alert("please check you connection");
         }
@@ -58,7 +59,7 @@ class Login extends Component {
     });
   };
   render() {
-    if (this.login) {
+    if (this.state.login) {
       return (
         <Redirect
           to={{
