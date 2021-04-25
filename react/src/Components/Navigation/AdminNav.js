@@ -14,8 +14,14 @@ function AdminNav() {
         <Link className="link" to="/UpadteTrainDetails">
           Update Train
         </Link>
+        <Link className="link pr-3 pl-2" to="/allUser">
+          User Information
+        </Link>
+        <Link className="link " to="/allbookings">
+          All Bookings
+        </Link>
         <Link className="float-right " style={{ color: "white" }} to="/logout">
-          <BiLogOut></BiLogOut>user Logout
+          <BiLogOut></BiLogOut>Logout
         </Link>
       </nav>
     </div>

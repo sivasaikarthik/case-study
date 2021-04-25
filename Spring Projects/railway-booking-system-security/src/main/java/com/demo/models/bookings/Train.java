@@ -1,4 +1,4 @@
-package com.example.demo.models;
+package com.demo.models.bookings;
 
 import java.util.Date;
 import java.util.List;

@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 import { Row, Col } from "reactstrap";
 import BookinService from "./Services/BookinService";
@@ -9,10 +10,16 @@ class MyBookings extends Component {
     this.state = {
       reservation: [],
     };
-    this.cancel = this.cancel.bind(this);
   }
   cancel = (pnr) => {
-    BookinService.cancel(pnr)
+    let user = JSON.parse(localStorage.getItem("login"));
+    console.log(
+      "http://localhost:9002/booking/deletePNR/" + pnr + "/" + user.username
+    );
+    axios
+      .put(
+        "http://localhost:9002/booking/deletePNR/" + pnr + "/" + user.username
+      )
       .then((res) => {
         console.log(res.data);
         alert("cancellation sucessful");
@@ -23,13 +30,23 @@ class MyBookings extends Component {
       });
   };
   show = () => {
-    BookinService.allUserBookings()
+    /* BookinService.allUserBookings()
+      .then((res) => this.setState({ reservation: res.data }))
+      .catch((err) => {
+        console.log(err);
+        alert("check your connection");
+      }); */
+    let user = JSON.parse(localStorage.getItem("login"));
+    console.log("http://localhost:9002/booking/userbookings/" + user.username);
+    axios
+      .get("http://localhost:9002/booking/userbookings/" + user.username)
       .then((res) => this.setState({ reservation: res.data }))
       .catch((err) => {
         console.log(err);
         alert("check your connection");
       });
     let allReservations = this.state.reservation;
+    console.log(allReservations);
     let result = allReservations.map((res) => {
       console.log(res);
       let b = null;
@@ -38,7 +55,7 @@ class MyBookings extends Component {
           <button
             type="button"
             className="btn-danger"
-            onClick={this.cancel(res.pnr)}
+            onClick={() => this.cancel(res.pnr)}
           >
             Cancel Booking
           </button>
@@ -95,7 +112,16 @@ class MyBookings extends Component {
     return result;
   };
   render() {
-    return <div>{this.show()}</div>;
+    return (
+      <div>
+        {this.show()}
+        {console.log("inside bookigs")}
+        <br />
+        <br />
+        <br />
+        <br />
+      </div>
+    );
   }
 }
 

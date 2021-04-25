@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Col, Form, Row, Label, FormGroup, Input } from "reactstrap";
-
+import BookingService from "./Services/BookinService";
+import { Redirect } from "react-router-dom";
+import axios from "axios";
 class BookingPage extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +13,15 @@ class BookingPage extends Component {
       gender: "",
       passengers: [],
       booking: JSON.parse(localStorage.getItem("booking")),
+      passengerCount: 1,
+
+      passengerCountErr: false,
+      passengerErrorMessage: "max 6 seats only",
+
+      passengerCountMinErr: false,
+      passengerMinErrorMessage: "Atleast add one seat",
+      redirect: null,
+      complete: false,
     };
   }
   changeHandler = (event) => {
@@ -23,43 +34,75 @@ class BookingPage extends Component {
     });
   };
   onAddPassender = () => {
-    const { name, age, gender, passengers } = this.state;
+    if (this.state.passengerCount <= 6) {
+      const { name, age, gender, passengers } = this.state;
 
-    const d = {
-      name: name,
-      age: age,
-      gender: gender,
-    };
-    let pas = passengers;
-    pas.push(d);
-    this.setState({
-      passengers: pas,
-      name: "",
-      age: "",
-      gender: "",
-    });
-    console.log(passengers);
+      const d = {
+        name: name,
+        age: age,
+        gender: gender,
+      };
+      let pas = passengers;
+      pas.push(d);
+      this.setState({
+        passengers: pas,
+        name: "",
+        age: "",
+        gender: "",
+      });
+      console.log(passengers);
+      this.setState({ passengerCount: this.state.passengerCount + 1 });
+    } else {
+      console.log("sorry only  six seats can be booked for this account");
+      this.setState({ passengerCountErr: true });
+    }
   };
 
   reservation = () => {
-    const { booking, passengers } = this.state;
-    let dup = {
-      trainNumber: booking.trainNumber,
-      date: booking.date,
-      personId: "karthik",
-      passengers: passengers,
-      classType: booking.coachType,
-      source: booking.source,
-      destination: booking.destination,
-      sourceTime: booking.sourceTime,
-      destinationTime: booking.destinationTime,
-      cost: booking.cost * passengers.length,
-    };
-    console.log("final booking details", dup);
+    if (this.state.passengers.length >= 1) {
+      const { booking, passengers } = this.state;
+      let user = JSON.parse(localStorage.getItem("login"));
+      let dup = {
+        trainNumber: booking.trainNumber,
+        date: booking.date + "",
+        personId: user.username,
+        passengers: passengers,
+        classType: booking.coacheType,
+        source: booking.source,
+        destination: booking.destination,
+        sourceTime: booking.sourceTime,
+        destinationTime: booking.destinationTime,
+        cost: booking.cost * passengers.length,
+      };
+
+      axios
+        .post("http://localhost:9002/booking/addBooking", dup)
+
+        .then((res) => {
+          console.log(res.data);
+          alert(res.data);
+          this.setState({ complete: true, redirect: "/mybookings" });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("check your connection");
+        });
+      console.log("final booking details", dup);
+    } else {
+      this.setState({ passengerCountMinErr: true });
+    }
   };
   render() {
     const { booking, passengers } = this.state;
-    console.log();
+    if (this.state.complete) {
+      return (
+        <Redirect
+          to={{
+            pathname: this.state.redirect,
+          }}
+        />
+      );
+    }
     return (
       <div>
         <Row>
@@ -100,7 +143,7 @@ class BookingPage extends Component {
                   </tr>
                   <tr>
                     <td>class Type</td>
-                    <td>{booking.coachType}</td>
+                    <td>{booking.coacheType}</td>
                   </tr>
                   <tr>
                     <td>source</td>
@@ -131,9 +174,14 @@ class BookingPage extends Component {
                 type="button"
                 class="btn btn-success"
               >
-                Add Passenger
+                Book Train
               </button>
             </div>
+            {this.state.passengerCountMinErr && (
+              <span style={{ color: "white" }} className="container">
+                {this.state.passengerMinErrorMessage}
+              </span>
+            )}
           </Col>
           <Col>
             {" "}
@@ -199,6 +247,11 @@ class BookingPage extends Component {
                     Add Passenger
                   </button>
                 </div>
+                {this.state.passengerCountErr && (
+                  <span style={{ color: "red" }} className="container">
+                    {this.state.passengerErrorMessage}
+                  </span>
+                )}
               </div>{" "}
             </div>{" "}
           </Col>{" "}

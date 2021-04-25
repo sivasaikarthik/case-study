@@ -8,6 +8,9 @@ class TrainDetailsService {
     return axios.get("http://localhost:9000/allTrains/" + id);
   }
   SearchTrain(day, source, destination) {
+    console.log(
+      "http://localhost:9001/all/" + day + "/" + source + "/" + destination
+    );
     return axios.get(
       "http://localhost:9000/searchTrains/" +
         day +

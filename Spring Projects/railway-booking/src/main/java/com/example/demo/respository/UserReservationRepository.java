@@ -1,5 +1,7 @@
 package com.example.demo.respository;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -13,5 +15,9 @@ public interface UserReservationRepository extends MongoRepository<ReservationDe
 	 */
 	@Query(value = "{'_id':?0,'train.personId':?1}")
 	ReservationDetails findByIDAndPersonid(long id, String personID);
+	
+	
+	@Query(value = "{'train.personId':?0}")
+	List<ReservationDetails> findByUser(String personID);
 
 }

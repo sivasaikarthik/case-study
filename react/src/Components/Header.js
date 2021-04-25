@@ -14,6 +14,8 @@ import UserNav from "./Navigation/UserNav";
 import AdminNav from "./Navigation/AdminNav";
 import Logout from "./Security/Logout";
 import App from "../App";
+import UserDetails from "./UserInfo/UserDetails";
+import AllUser from "./AllUser";
 
 class Header extends Component {
   constructor(props) {
@@ -39,7 +41,7 @@ class Header extends Component {
   };
   checkUserType = () => {
     let details = JSON.parse(localStorage.getItem("login"));
-
+    console.log(details);
     if (details.roles[0] == "ROLE_USER") {
       return <UserNav></UserNav>;
     } else if (details.roles[0] == "ROLE_ADMIN") {
@@ -56,6 +58,12 @@ class Header extends Component {
           <Switch>
             <Route exact path="/first">
               <Home />
+            </Route>
+            <Route exact path="/userinfo">
+              <UserDetails />
+            </Route>
+            <Route exact path="/allUser">
+              <AllUser />
             </Route>
             <Route exact path="/logout">
               <Logout />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Row } from "reactstrap";
 import BookinService from "./Services/BookinService";
 import { WiTrain } from "react-icons/all";
@@ -12,6 +12,7 @@ function Search(props) {
   let date = localStorage.getItem("date");
   /*  let redirect = false; */
   console.log(date);
+  const [coaches, setCoaches] = useState(null);
 
   const bookingPage = (
     trainNumber,
@@ -39,21 +40,27 @@ function Search(props) {
     history.push("/booking");
   };
   const searchView = trains.map((train) => {
+    console.log(train);
     let trainStopsAndTimes = train.trainStopsAndTimes;
     let result = station(trainStopsAndTimes);
     let seatAvaliable = (trainNumber, date, costOfSleeper) => {
       console.log();
-      /*  BookinService.seatsLeft(trainNumber + "" + date)
-    .then((res) => (coaches = res.date))
-    .catch((err) => {
-      console.log(err);
-      alert("please check connection with server and retry");
-    }); */
-      let coaches = [
-        { coacheType: "Sleeper class", noOfCoaches: 12, noOfSeats: 115 },
-        { coacheType: "third class", noOfCoaches: 3, noOfSeats: 115 },
-        { coacheType: "Secound class", noOfCoaches: 2, noOfSeats: 115 },
-      ];
+      BookinService.seatsLeft(date, trainNumber)
+        .then((res) => {
+          localStorage.setItem("coaches", JSON.stringify(res.data));
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("please check connection with server and retry");
+        });
+      /*   let coaches = [
+          { coacheType: "Sleeper class", noOfCoaches: 12, noOfSeats: 115 },
+          { coacheType: "third class", noOfCoaches: 3, noOfSeats: 115 },
+          { coacheType: "Secound class", noOfCoaches: 2, noOfSeats: 115 },
+        ];  */
+      let dummycoaches = JSON.parse(localStorage.getItem("coaches"));
+      let coaches = dummycoaches.allCoaches;
+      console.log(coaches);
       const seatAvaliable = coaches.map((coache) => {
         let dummy = (coache.noOfCoaches - 1) * 100 + coache.noOfSeats;
         let no = coache.noOfCoaches;
@@ -63,19 +70,19 @@ function Search(props) {
         }
         let cost = costOfSleeper;
         switch (coache.coacheType) {
-          case "Third Ac":
+          case "3 Ac":
             cost = cost + 0.4 * cost;
             break;
-          case "Secound Ac":
+          case "2 Ac":
             cost = cost + 0.55 * cost;
             break;
-          case "First Ac":
+          case "1 Ac":
             cost = cost + 0.65 * cost;
             break;
           case "Chair Class":
             cost = cost - 0.2 * cost;
           default:
-            cost = cost + cost;
+            cost = cost;
         }
 
         return (
@@ -163,11 +170,11 @@ function station(props) {
     console.log(props[i].cost);
     if (props[i].stop == source) {
       j = j + 1;
-      sourceTime = props[i].time.slice(11, 16);
+      sourceTime = props[i].time.slice(12, 17);
     } else if (props[i].stop == destination) {
       j = j + 1;
       cost = cost + props[i].cost;
-      destinationTime = props[i].time.slice(11, 16);
+      destinationTime = props[i].time.slice(12, 17);
       break;
     } else if (j == 1) {
       cost = cost + props[i].cost - 0.2 * props[i].cost;

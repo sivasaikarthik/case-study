@@ -1,12 +1,18 @@
 package com.example.demo.controller;
 
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +33,7 @@ import com.example.demo.service.NextSequenceService;
 
 @RestController
 @RequestMapping("/booking")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookingController {
 
 	@Autowired
@@ -57,6 +64,36 @@ public class BookingController {
 	@GetMapping("allBooking")
 	public List<ReservationDetails> allBooking() {
 		return userReservationRepo.findAll();
+	}
+	
+	@GetMapping("/coaches/{date}/{trainNumber}")
+	public Optional<CoachesDetails> seatLeft(@PathVariable String date,@PathVariable int trainNumber)
+	{
+		
+		if (restTemplate.getForObject("https://Train-service/trainExist/" + trainNumber,
+				Boolean.class)) {
+			// Checking whether the train on that date exist in database or not if not it
+						// creates new database
+						if (!userCoachesRepository.existsById(trainNumber+""+date)) {
+							// Getting data from the train detail Micro service
+							ResponseEntity<List<Coaches>> responseEntity = restTemplate.exchange(
+									"https://Train-service/getCoaches/" +trainNumber , HttpMethod.GET, null,
+									new ParameterizedTypeReference<List<Coaches>>() {
+									});
+							List<Coaches> allCoaches = responseEntity.getBody();
+
+							coachesDetails.setTrainNumberAndDate(trainNumber+""+date);
+							coachesDetails.setAllCoaches(allCoaches);
+							userCoachesRepository.save(coachesDetails);
+						}
+
+		} 
+		return userCoachesRepository.findById(trainNumber+""+date);
+	}
+	@GetMapping("/userbookings/{personId}")
+	public List<ReservationDetails> allUserbookings(@PathVariable String personId)
+	{
+		return userReservationRepo.findByUser(personId);
 	}
 
 	@PostMapping("/addBooking")
@@ -179,6 +216,8 @@ public class BookingController {
 		userCoachesRepository.save(cd);
 		return seats;
 	}
+	
+	
 	
 	
 

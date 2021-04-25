@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.demo.models.traindetails.CoachesDetails;
 import com.demo.models.traindetails.Details;
 
 @RestController
@@ -45,6 +46,12 @@ public class RailwayReservationController {
 				});
 		return responseEntity.getBody();
 	}
+	@GetMapping("/all/coaches/{date}/{trainNumber}")
+	public CoachesDetails seatLeft(@PathVariable String date,@PathVariable int trainNumber)
+	{
+		
+		return restTemplate.getForObject("https://BOOKING-SERVICE/booking/coaches/"+date+"/"+trainNumber, CoachesDetails.class);
+	}
 
 	@GetMapping("/all/{searchByTrainID}")
 	public Details trainById(@PathVariable int searchByTrainID) {
@@ -61,7 +68,6 @@ public class RailwayReservationController {
 				});
 		return responseEntity.getBody();
 	}
-
 	@PostMapping("/authuser/addTrain")
 	@PreAuthorize("hasRole('ADMIN')")
 	public String addTrain(@RequestBody Details details) {

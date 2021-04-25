@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { IoSwapVertical } from "react-icons/all";
 import { Col, Form, Input, Row } from "reactstrap";
 import { Redirect } from "react-router-dom";
+import TrainDetailsServices from "./TrainDetailsServices";
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -14,6 +15,7 @@ class Home extends Component {
       autorefre: true,
       redirect: null,
     };
+
     //this.searchButton = this.searchButton.bind(this);
   }
 
@@ -30,89 +32,22 @@ class Home extends Component {
   searchTrain = () => {
     const d = new Date(this.state.date);
     const week = d.getDay();
-    /* TrainDetailsServices.SearchTrain(
+    TrainDetailsServices.SearchTrain(
       week,
       this.state.source,
       this.state.destination
-    ).then((res) => this.setState({ train: res.data }))
-      .catch((err) => alert("please check ur connection ", err)); */
-    let trainData = [
-      {
-        trainName: "TIRUPATI SAINAGAR SHIRDI EXPRESS",
-        trainNumber: 17417,
-        trainStopsAndTimes: [
-          {
-            stop: "banglore",
-            time: "0001-11-30T13:37:00.000+00:00",
-            cost: 0.0,
-          },
-          {
-            stop: "hyderabad",
-            time: "0001-11-30T14:37:00.000+00:00",
-            cost: 55.0,
-          },
-          {
-            stop: "Thirupathi",
-            time: "0001-11-30T15:37:00.000+00:00",
-            cost: 45.0,
-          },
-        ],
-        weekDays: {
-          sunday: false,
-          monday: false,
-          tuesday: true,
-          wednesday: false,
-          thrusday: true,
-          friday: false,
-          saturday: false,
-        },
-        coaches: [
-          { coacheType: "Sleeper class", noOfCoaches: 12, noOfSeats: 115 },
-          { coacheType: "third class", noOfCoaches: 3, noOfSeats: 115 },
-          { coacheType: "Secound class", noOfCoaches: 2, noOfSeats: 115 },
-        ],
-      },
-      {
-        trainName: " SAINAGAR SHIRDI EXPRESS",
-        trainNumber: 17416,
-        trainStopsAndTimes: [
-          {
-            stop: "banglore",
-            time: "0001-11-30T13:37:00.000+00:00",
-            cost: 0,
-          },
-          {
-            stop: "Thirupathi",
-            time: "0001-11-30T15:37:00.000+00:00",
-            cost: 45.0,
-          },
-          {
-            stop: "hyderabad",
-            time: "0001-11-30T14:37:00.000+00:00",
-            cost: 55.0,
-          },
-        ],
-        weekDays: {
-          sunday: false,
-          monday: false,
-          tuesday: true,
-          wednesday: false,
-          thrusday: true,
-          friday: false,
-          saturday: false,
-        },
-        coaches: [
-          { coacheType: "Sleeper class", noOfCoaches: 12, noOfSeats: 115 },
-          { coacheType: "third class", noOfCoaches: 3, noOfSeats: 115 },
-          { coacheType: "Secound class", noOfCoaches: 2, noOfSeats: 115 },
-        ],
-      },
-    ];
-    console.log(trainData);
+    )
+      .then((res) => {
+        localStorage.setItem("train", JSON.stringify(res.data));
+        console.log(res.data);
+      })
+      .catch((err) => alert("please check ur connection ", err));
+    let trainData = this.state.train;
+    console.log(this.state.train);
     localStorage.setItem("sou", this.state.source);
     localStorage.setItem("des", this.state.destination);
     localStorage.setItem("date", this.state.date);
-    localStorage.setItem("train", JSON.stringify(trainData));
+
     this.setState({ redirect: "/Search" });
   };
   render() {
